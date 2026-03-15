@@ -1,5 +1,21 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+/* Inject keyframes via useEffect */
+function useKeyframeStyles() {
+  useEffect(() => {
+    if (!document.querySelector("[data-jusor-anim]")) {
+      const styleTag = document.createElement("style");
+      styleTag.textContent = `
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(1.8); opacity: 0; } }
+@keyframes float-up { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-6px); opacity: 0.6; } }
+`;
+      styleTag.setAttribute("data-jusor-anim", "1");
+      document.head.appendChild(styleTag);
+    }
+  }, []);
+}
 
 /* ===== Icons ===== */
 const ChevronLeft = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b0b0b" strokeWidth="2" strokeLinecap="round"><path d="M15 18l-6-6 6-6"/></svg>;
@@ -89,9 +105,9 @@ const CircularTimer = ({ hoursLeft = 58, totalHours = 72 }: { hoursLeft?: number
         <circle cx="28" cy="28" r={r} fill="none" stroke="#eef0f2" strokeWidth="4" />
         <circle cx="28" cy="28" r={r} fill="none" stroke={color} strokeWidth="4"
           strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset}
-          style={{ transform: "rotate(-90deg)", transformOrigin: "center", transition: "stroke-dashoffset 0.5s" }} />
+          style={{ transform: "rotate(-90deg)", transformOrigin: "center" as const, transition: "stroke-dashoffset 0.5s" }} />
       </svg>
-      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center" }}>
         <span style={{ fontSize: 14, fontWeight: 700, color, lineHeight: 1 }}>{hoursLeft}h</span>
         <span style={{ fontSize: 8, color: "#8f8f8f", fontWeight: 500 }}>left</span>
       </div>
@@ -199,7 +215,7 @@ const TabRow = () => (
 );
 
 const ContentDetails = () => (
-  <div style={{ background: "white", border: "1px solid #ecf6ff", borderRadius: 16, padding: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+  <div style={{ background: "white", border: "1px solid #ecf6ff", borderRadius: 16, padding: 12, display: "flex", flexDirection: "column" as const, gap: 8 }}>
     <div style={{ fontSize: 12, color: "#8f8f8f" }}>Content Details</div>
     <div style={{ height: 1, background: "#ecf6ff" }} />
     <div style={{ display: "flex", gap: 9 }}>
@@ -217,7 +233,7 @@ const TimelineInfo = ({ rows }: { rows?: [string, string, string?][] }) => {
   ];
   const data = rows || defaultRows;
   return (
-    <div style={{ background: "white", border: "1px solid #ecf6ff", borderRadius: 16, padding: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+    <div style={{ background: "white", border: "1px solid #ecf6ff", borderRadius: 16, padding: 12, display: "flex", flexDirection: "column" as const, gap: 8 }}>
       <div style={{ fontSize: 12, color: "#8f8f8f" }}>Timeline</div>
       <div style={{ height: 1, background: "#ecf6ff" }} />
       {data.map(([l, v, highlight], i) => (
@@ -231,10 +247,10 @@ const TimelineInfo = ({ rows }: { rows?: [string, string, string?][] }) => {
 };
 
 const PhoneFrame = ({ children, bottomButtons }: { children: React.ReactNode; bottomButtons: React.ReactNode }) => (
-  <div style={{ width: 375, background: "#fafafa", borderRadius: 32, overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.12)", display: "flex", flexDirection: "column", height: 812 }}>
+  <div style={{ width: 375, background: "#fafafa", borderRadius: 32, overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.12)", display: "flex", flexDirection: "column" as const, height: 812 }}>
     <StatusBar />
     <TopBar />
-    <div style={{ flex: 1, overflowY: "auto", padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
+    <div style={{ flex: 1, overflowY: "auto" as const, padding: "0 16px 16px", display: "flex", flexDirection: "column" as const, gap: 8 }}>
       {children}
     </div>
     <BottomBar buttons={bottomButtons} />
@@ -246,7 +262,7 @@ const PhoneFrame = ({ children, bottomButtons }: { children: React.ReactNode; bo
    ================================================================= */
 const InvitedPending = () => (
   <PhoneFrame bottomButtons={<BtnBackToCampaign />}>
-    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column", gap: 10 }}>
+    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" as const, gap: 10 }}>
       <ProfileCard badge={<InvitedBadge />} />
       <div style={{ background: "#ff4f45", borderRadius: 20, padding: "12px 16px", color: "white" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
@@ -284,7 +300,7 @@ const InvitedPending = () => (
    ================================================================= */
 const InvitedAccepted = () => (
   <PhoneFrame bottomButtons={<BtnBackToCampaign />}>
-    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column", gap: 10 }}>
+    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" as const, gap: 10 }}>
       <ProfileCard badge={<InvitedBadge />} />
       <div style={{ background: "#ff4f45", borderRadius: 20, padding: "12px 16px", color: "white" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
@@ -314,15 +330,94 @@ const InvitedAccepted = () => (
 );
 
 /* =================================================================
-   2) INVITED — Counter Offer
+   DeliverablesDiff — handles ALL scenarios:
+   - "swap"    : Influencer replaced a deliverable with something else
+   - "removed" : Influencer removed a deliverable (reduced scope)
+   - "added"   : Influencer added an extra deliverable
+   - "qty"     : Same type but different quantity
+   - "same"    : No change
+
+   If changes is null/empty -> component returns nothing (price-only counter)
+   ================================================================= */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const DeliverablesDiff = ({ changes }: { changes: any[] | null }) => {
+  if (!changes || changes.length === 0) return null;
+
+  return (
+    <div style={{ marginTop: 8, background: "white", borderRadius: 10, border: "1px solid #eef0f2", padding: "10px 10px 8px" }}>
+      <div style={{ fontSize: 10, color: "#8f8f8f", fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: 0.3, marginBottom: 8 }}>Influencer changed the deliverables</div>
+      <div style={{ display: "flex", flexDirection: "column" as const, gap: 5 }}>
+        {changes.map((c, i) => {
+          if (c.type === "swap") return (
+            <div key={i} style={{ background: "#fafafa", borderRadius: 8, padding: "8px 10px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
+                <span style={{ fontSize: 10, color: "#8f8f8f", fontWeight: 600, minWidth: 58 }}>You asked</span>
+                <span style={{ fontSize: 11, color: "#9ca3af", fontWeight: 500, textDecoration: "line-through" }}>{c.from}</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 10, color: "#e65100", fontWeight: 600, minWidth: 58 }}>Instead</span>
+                <span style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 50, padding: "2px 8px", fontSize: 11, fontWeight: 600, color: "#c2410c" }}>{c.to}</span>
+              </div>
+            </div>
+          );
+          if (c.type === "qty") return (
+            <div key={i} style={{ background: "#fafafa", borderRadius: 8, padding: "8px 10px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
+                <span style={{ fontSize: 10, color: "#8f8f8f", fontWeight: 600, minWidth: 58 }}>You asked</span>
+                <span style={{ fontSize: 11, color: "#9ca3af", fontWeight: 500, textDecoration: "line-through" }}>{c.from}</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 10, color: "#4446d2", fontWeight: 600, minWidth: 58 }}>Changed to</span>
+                <span style={{ background: "rgba(68,70,210,0.06)", border: "1px solid rgba(68,70,210,0.15)", borderRadius: 50, padding: "2px 8px", fontSize: 11, fontWeight: 600, color: "#4446d2" }}>{c.to}</span>
+              </div>
+            </div>
+          );
+          if (c.type === "removed") return (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 6px", background: "#fef2f2", borderRadius: 6 }}>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+              <span style={{ fontSize: 11, color: "#dc2626", fontWeight: 500 }}>Removed</span>
+              <span style={{ fontSize: 11, color: "#9ca3af", fontWeight: 500, textDecoration: "line-through" }}>{c.item}</span>
+            </div>
+          );
+          if (c.type === "added") return (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 6px", background: "#f0fdf4", borderRadius: 6 }}>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              <span style={{ fontSize: 11, color: "#16a34a", fontWeight: 500 }}>Added</span>
+              <span style={{ fontSize: 11, color: "#16a34a", fontWeight: 600 }}>{c.item}</span>
+            </div>
+          );
+          if (c.type === "same") return (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, padding: "2px 0" }}>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+              <span style={{ fontSize: 11, color: "#6b7280", fontWeight: 500 }}>{c.item}</span>
+              <span style={{ fontSize: 9, color: "#9ca3af" }}>— no change</span>
+            </div>
+          );
+          return null;
+        })}
+      </div>
+    </div>
+  );
+};
+
+/* Sample scenario data — swap + unchanged */
+const deliverableChanges = [
+  { type: "swap", from: "Instagram Story x3", to: "Instagram Reel x2" },
+  { type: "same", item: "TikTok Post x3" },
+];
+
+/* =================================================================
+   2) INVITED — Counter Offer (with Deliverables Diff)
    ================================================================= */
 const InvitedCounter = () => (
   <PhoneFrame bottomButtons={<><BtnReject /><BtnAccept label="Accept SAR 250" /></>}>
-    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column", gap: 10 }}>
+    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" as const, gap: 10 }}>
       <ProfileCard badge={<InvitedBadge />} />
       <div style={{ background: "#fafafa", borderRadius: 14, padding: 12 }}>
         <div style={{ position: "relative", paddingLeft: 20 }}>
           <div style={{ position: "absolute", left: 7, top: 8, bottom: 8, width: 2, background: "#e5e7eb" }} />
+
+          {/* You offered */}
           <div style={{ position: "relative", paddingBottom: 14, paddingLeft: 16 }}>
             <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "#060b35", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <svg width="8" height="8" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
@@ -330,6 +425,8 @@ const InvitedCounter = () => (
             <div style={{ fontSize: 11, color: "#8f8f8f", fontWeight: 500, marginBottom: 2 }}>You offered</div>
             <div style={{ fontSize: 15, fontWeight: 700, color: "#8f8f8f", textDecoration: "line-through" }}>SAR 180</div>
           </div>
+
+          {/* Counter */}
           <div style={{ position: "relative", paddingBottom: 14, paddingLeft: 16 }}>
             <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "#ff4f45", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <svg width="8" height="8" viewBox="0 0 24 24" fill="white"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16l-6.4 5.2L8 14l-6-4.8h7.6z" transform="scale(0.5) translate(12,12)"/></svg>
@@ -341,7 +438,12 @@ const InvitedCounter = () => (
             <div style={{ fontSize: 11, color: "#555", fontStyle: "italic", marginTop: 5, lineHeight: 1.4, background: "white", padding: "5px 8px", borderRadius: 8, borderLeft: "2px solid #ff4f45" }}>
               &quot;I believe this better reflects the quality and reach I can deliver for your brand.&quot;
             </div>
+
+            {/* Deliverables Diff — data-driven, handles all cases */}
+            <DeliverablesDiff changes={deliverableChanges} />
           </div>
+
+          {/* Awaiting */}
           <div style={{ position: "relative", paddingLeft: 16 }}>
             <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "white", border: "2px solid #4446d2", boxShadow: "0 0 0 4px rgba(68,70,210,0.1)" }}>
               <span style={{ position: "absolute", top: 2, left: 2, width: 8, height: 8, borderRadius: "50%", background: "#4446d2", animation: "blink 1.5s infinite", display: "inline-block" }} />
@@ -363,12 +465,128 @@ const InvitedCounter = () => (
   </PhoneFrame>
 );
 
+/* === Counter Offer variants for different deliverable scenarios === */
+
+/* Scenario A: Price only — no deliverable changes */
+const changesA = null;
+const CounterPriceOnly = () => (
+  <PhoneFrame bottomButtons={<><BtnReject /><BtnAccept label="Accept SAR 250" /></>}>
+    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" as const, gap: 10 }}>
+      <ProfileCard badge={<InvitedBadge />} />
+      <div style={{ background: "#fafafa", borderRadius: 14, padding: 12 }}>
+        <div style={{ position: "relative", paddingLeft: 20 }}>
+          <div style={{ position: "absolute", left: 7, top: 8, bottom: 8, width: 2, background: "#e5e7eb" }} />
+          <div style={{ position: "relative", paddingBottom: 14, paddingLeft: 16 }}>
+            <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "#060b35", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <div style={{ fontSize: 11, color: "#8f8f8f", fontWeight: 500, marginBottom: 2 }}>You offered</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#8f8f8f", textDecoration: "line-through" }}>SAR 180</div>
+          </div>
+          <div style={{ position: "relative", paddingBottom: 14, paddingLeft: 16 }}>
+            <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "#ff4f45", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="white"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16l-6.4 5.2L8 14l-6-4.8h7.6z" transform="scale(0.5) translate(12,12)"/></svg>
+            </div>
+            <div style={{ fontSize: 11, color: "#8f8f8f", fontWeight: 500, marginBottom: 2 }}>Ahmed Ali counter-offered</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "#0b0b0b" }}>
+              SAR 250 <span style={{ fontSize: 11, color: "#dc2626", fontWeight: 600, background: "#fef2f2", padding: "2px 6px", borderRadius: 20, marginLeft: 4 }}>+SAR 70</span>
+            </div>
+            <div style={{ fontSize: 11, color: "#555", fontStyle: "italic", marginTop: 5, lineHeight: 1.4, background: "white", padding: "5px 8px", borderRadius: 8, borderLeft: "2px solid #ff4f45" }}>
+              &quot;I believe my rates reflect my audience quality.&quot;
+            </div>
+            <DeliverablesDiff changes={changesA} />
+          </div>
+          <div style={{ position: "relative", paddingLeft: 16 }}>
+            <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "white", border: "2px solid #4446d2", boxShadow: "0 0 0 4px rgba(68,70,210,0.1)" }}>
+              <span style={{ position: "absolute", top: 2, left: 2, width: 8, height: 8, borderRadius: "50%", background: "#4446d2", animation: "blink 1.5s infinite", display: "inline-block" }} />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ fontSize: 11, color: "#4446d2", fontWeight: 600 }}>Awaiting your response</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <PaymentBreakdown baseAmount={250} />
+    </div>
+    <TabRow />
+    <ContentDetails />
+    <TimelineInfo />
+  </PhoneFrame>
+);
+
+/* Scenario B: Removed + Added (not a swap — separate) */
+const changesB = [
+  { type: "removed", item: "Instagram Story x3" },
+  { type: "added", item: "YouTube Short x1" },
+  { type: "same", item: "TikTok Post x3" },
+];
+
+/* Scenario C: Quantity change only */
+const changesC = [
+  { type: "qty", from: "Instagram Story x3", to: "Instagram Story x2" },
+  { type: "same", item: "TikTok Post x3" },
+];
+
+/* Scenario D: Mixed — swap + added + unchanged */
+const changesD = [
+  { type: "swap", from: "Instagram Story x3", to: "Instagram Reel x2" },
+  { type: "added", item: "YouTube Short x1" },
+  { type: "same", item: "TikTok Post x3" },
+];
+
+/* Generic counter screen that takes changes prop */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+const CounterVariant = ({ changes, label }: { changes: any[] | null; label?: string }) => (
+  <PhoneFrame bottomButtons={<><BtnReject /><BtnAccept label="Accept SAR 250" /></>}>
+    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" as const, gap: 10 }}>
+      <ProfileCard badge={<InvitedBadge />} />
+      <div style={{ background: "#fafafa", borderRadius: 14, padding: 12 }}>
+        <div style={{ position: "relative", paddingLeft: 20 }}>
+          <div style={{ position: "absolute", left: 7, top: 8, bottom: 8, width: 2, background: "#e5e7eb" }} />
+          <div style={{ position: "relative", paddingBottom: 14, paddingLeft: 16 }}>
+            <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "#060b35", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <div style={{ fontSize: 11, color: "#8f8f8f", fontWeight: 500, marginBottom: 2 }}>You offered</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#8f8f8f", textDecoration: "line-through" }}>SAR 180</div>
+          </div>
+          <div style={{ position: "relative", paddingBottom: 14, paddingLeft: 16 }}>
+            <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "#ff4f45", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="white"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16l-6.4 5.2L8 14l-6-4.8h7.6z" transform="scale(0.5) translate(12,12)"/></svg>
+            </div>
+            <div style={{ fontSize: 11, color: "#8f8f8f", fontWeight: 500, marginBottom: 2 }}>Ahmed Ali counter-offered</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "#0b0b0b" }}>
+              SAR 250 <span style={{ fontSize: 11, color: "#dc2626", fontWeight: 600, background: "#fef2f2", padding: "2px 6px", borderRadius: 20, marginLeft: 4 }}>+SAR 70</span>
+            </div>
+            <div style={{ fontSize: 11, color: "#555", fontStyle: "italic", marginTop: 5, lineHeight: 1.4, background: "white", padding: "5px 8px", borderRadius: 8, borderLeft: "2px solid #ff4f45" }}>
+              &quot;I believe this better reflects the quality and reach I can deliver.&quot;
+            </div>
+            <DeliverablesDiff changes={changes} />
+          </div>
+          <div style={{ position: "relative", paddingLeft: 16 }}>
+            <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "white", border: "2px solid #4446d2", boxShadow: "0 0 0 4px rgba(68,70,210,0.1)" }}>
+              <span style={{ position: "absolute", top: 2, left: 2, width: 8, height: 8, borderRadius: "50%", background: "#4446d2", animation: "blink 1.5s infinite", display: "inline-block" }} />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ fontSize: 11, color: "#4446d2", fontWeight: 600 }}>Awaiting your response</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <PaymentBreakdown baseAmount={250} />
+    </div>
+    <TabRow />
+    <ContentDetails />
+    <TimelineInfo />
+  </PhoneFrame>
+);
+
 /* =================================================================
    3) INVITED — Rejected
    ================================================================= */
 const InvitedRejected = () => (
   <PhoneFrame bottomButtons={<BtnAccept label="Send New Offer" />}>
-    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column", gap: 10 }}>
+    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" as const, gap: 10 }}>
       <ProfileCard badge={<InvitedBadge />} />
       <div style={{ background: "#ff4f45", borderRadius: 20, padding: "12px 16px", color: "white", opacity: 0.6 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
@@ -401,7 +619,7 @@ const InvitedRejected = () => (
    ================================================================= */
 const InvitedExpired = () => (
   <PhoneFrame bottomButtons={<BtnResend />}>
-    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column", gap: 10 }}>
+    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" as const, gap: 10 }}>
       <ProfileCard badge={<InvitedBadge />} dimmed />
       <div style={{ background: "#9ca3af", borderRadius: 20, padding: "12px 16px", color: "white" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
@@ -450,7 +668,7 @@ const InvitedExpired = () => (
    ================================================================= */
 const PublicScreen = () => (
   <PhoneFrame bottomButtons={<><BtnReject /><BtnAccept label="Accept" /></>}>
-    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column", gap: 10 }}>
+    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" as const, gap: 10 }}>
       <ProfileCard badge={<PublicBadge />} />
       <div style={{ background: "#ff4f45", borderRadius: 20, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", color: "white" }}>
         <span style={{ fontSize: 16, fontWeight: 500 }}>Proposed Price</span>
@@ -465,9 +683,10 @@ const PublicScreen = () => (
 );
 
 /* =================================================================
-   Main App — 6 States
+   Main App — 10 States
    ================================================================= */
 export default function Home() {
+  useKeyframeStyles();
   const [view, setView] = useState(0);
 
   const views = [
@@ -488,12 +707,44 @@ export default function Home() {
       component: <InvitedAccepted />
     },
     {
-      label: "Counter",
+      label: "Counter: Swap",
       icon: <NegotiateIcon />,
-      desc: "Influencer proposed a different price — accept or reject",
+      desc: "Swapped deliverable — replaced Story x3 with Reel x2",
       color: "#e65100",
       bg: "rgba(230,81,0,0.06)",
       component: <InvitedCounter />
+    },
+    {
+      label: "Counter: Price Only",
+      icon: <NegotiateIcon />,
+      desc: "Price change only — same deliverables, no diff shown",
+      color: "#e65100",
+      bg: "rgba(230,81,0,0.06)",
+      component: <CounterPriceOnly />
+    },
+    {
+      label: "Counter: Remove + Add",
+      icon: <NegotiateIcon />,
+      desc: "Removed Story x3, added YouTube Short x1 separately",
+      color: "#e65100",
+      bg: "rgba(230,81,0,0.06)",
+      component: <CounterVariant changes={changesB} />
+    },
+    {
+      label: "Counter: Qty Change",
+      icon: <NegotiateIcon />,
+      desc: "Same type, different quantity — Story x3 -> Story x2",
+      color: "#e65100",
+      bg: "rgba(230,81,0,0.06)",
+      component: <CounterVariant changes={changesC} />
+    },
+    {
+      label: "Counter: Mixed",
+      icon: <NegotiateIcon />,
+      desc: "Multiple changes — swap + new deliverable + unchanged",
+      color: "#e65100",
+      bg: "rgba(230,81,0,0.06)",
+      component: <CounterVariant changes={changesD} />
     },
     {
       label: "Rejected",
@@ -522,16 +773,18 @@ export default function Home() {
   ];
 
   return (
-    <div style={{ fontFamily: "'Urbanist', 'Inter', system-ui, sans-serif", background: "#f5f5f7", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", padding: "32px 16px" }}>
-      <div style={{ textAlign: "center", marginBottom: 20 }}>
+    <div style={{ fontFamily: "'Urbanist', 'Inter', system-ui, sans-serif", background: "#f5f5f7", minHeight: "100vh", display: "flex", flexDirection: "column" as const, alignItems: "center", padding: "32px 16px" }}>
+      {/* Header */}
+      <div style={{ textAlign: "center" as const, marginBottom: 20 }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(68,70,210,0.08)", color: "#4446d2", fontSize: 12, fontWeight: 600, padding: "5px 14px", borderRadius: 50, marginBottom: 10 }}>
           JUSOR — Business View
         </div>
         <h1 style={{ fontSize: 22, fontWeight: 700, color: "#0b0b0b", margin: "0 0 4px" }}>Proposal Details — All States</h1>
-        <p style={{ fontSize: 13, color: "#717171", margin: 0 }}>Complete lifecycle: Pending → Accepted / Counter / Rejected / Expired + Public</p>
+        <p style={{ fontSize: 13, color: "#717171", margin: 0 }}>Complete lifecycle: Pending {'->'} Accepted / Counter / Rejected / Expired + Public</p>
       </div>
 
-      <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap", justifyContent: "center", maxWidth: 500 }}>
+      {/* State Cards */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" as const, justifyContent: "center", maxWidth: 500 }}>
         {views.map((v, i) => (
           <button key={i} onClick={() => setView(i)} style={{
             padding: "8px 14px", borderRadius: 12, border: view === i ? `1.5px solid ${v.color}` : "1.5px solid transparent",
@@ -544,8 +797,10 @@ export default function Home() {
         ))}
       </div>
 
-      <div style={{ textAlign: "center", marginBottom: 16, fontSize: 12, color: "#717171" }}>{views[view].desc}</div>
+      {/* Description */}
+      <div style={{ textAlign: "center" as const, marginBottom: 16, fontSize: 12, color: "#717171" }}>{views[view].desc}</div>
 
+      {/* Phone */}
       {views[view].component}
     </div>
   );
