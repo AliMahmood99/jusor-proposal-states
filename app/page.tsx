@@ -435,7 +435,7 @@ const InvitedCounter = () => (
             <div style={{ fontSize: 18, fontWeight: 700, color: "#0b0b0b" }}>
               SAR 250 <span style={{ fontSize: 11, color: "#dc2626", fontWeight: 600, background: "#fef2f2", padding: "2px 6px", borderRadius: 20, marginLeft: 4 }}>+SAR 70</span>
             </div>
-            <div style={{ fontSize: 11, color: "#555", fontStyle: "italic", marginTop: 5, lineHeight: 1.4, background: "white", padding: "5px 8px", borderRadius: 8, borderLeft: "2px solid #ff4f45" }}>
+            <div style={{ fontSize: 11, color: "#555", fontStyle: "italic" as const, marginTop: 5, lineHeight: 1.4, background: "white", padding: "5px 8px", borderRadius: 8, borderLeft: "2px solid #ff4f45" }}>
               &quot;I believe this better reflects the quality and reach I can deliver for your brand.&quot;
             </div>
 
@@ -491,7 +491,7 @@ const CounterPriceOnly = () => (
             <div style={{ fontSize: 18, fontWeight: 700, color: "#0b0b0b" }}>
               SAR 250 <span style={{ fontSize: 11, color: "#dc2626", fontWeight: 600, background: "#fef2f2", padding: "2px 6px", borderRadius: 20, marginLeft: 4 }}>+SAR 70</span>
             </div>
-            <div style={{ fontSize: 11, color: "#555", fontStyle: "italic", marginTop: 5, lineHeight: 1.4, background: "white", padding: "5px 8px", borderRadius: 8, borderLeft: "2px solid #ff4f45" }}>
+            <div style={{ fontSize: 11, color: "#555", fontStyle: "italic" as const, marginTop: 5, lineHeight: 1.4, background: "white", padding: "5px 8px", borderRadius: 8, borderLeft: "2px solid #ff4f45" }}>
               &quot;I believe my rates reflect my audience quality.&quot;
             </div>
             <DeliverablesDiff changes={changesA} />
@@ -558,7 +558,7 @@ const CounterVariant = ({ changes, label }: { changes: any[] | null; label?: str
             <div style={{ fontSize: 18, fontWeight: 700, color: "#0b0b0b" }}>
               SAR 250 <span style={{ fontSize: 11, color: "#dc2626", fontWeight: 600, background: "#fef2f2", padding: "2px 6px", borderRadius: 20, marginLeft: 4 }}>+SAR 70</span>
             </div>
-            <div style={{ fontSize: 11, color: "#555", fontStyle: "italic", marginTop: 5, lineHeight: 1.4, background: "white", padding: "5px 8px", borderRadius: 8, borderLeft: "2px solid #ff4f45" }}>
+            <div style={{ fontSize: 11, color: "#555", fontStyle: "italic" as const, marginTop: 5, lineHeight: 1.4, background: "white", padding: "5px 8px", borderRadius: 8, borderLeft: "2px solid #ff4f45" }}>
               &quot;I believe this better reflects the quality and reach I can deliver.&quot;
             </div>
             <DeliverablesDiff changes={changes} />
@@ -582,7 +582,7 @@ const CounterVariant = ({ changes, label }: { changes: any[] | null; label?: str
 );
 
 /* =================================================================
-   3) INVITED — Rejected
+   3a) INVITED — Declined by Influencer
    ================================================================= */
 const InvitedRejected = () => (
   <PhoneFrame bottomButtons={<BtnAccept label="Send New Offer" />}>
@@ -603,7 +603,7 @@ const InvitedRejected = () => (
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8f8f8f" strokeWidth="2" strokeLinecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           <span style={{ fontSize: 10, color: "#8f8f8f", fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: 0.3 }}>Reason</span>
         </div>
-        <div style={{ fontSize: 12, color: "#555", lineHeight: 1.4, fontStyle: "italic" }}>
+        <div style={{ fontSize: 12, color: "#555", lineHeight: 1.4, fontStyle: "italic" as const }}>
           &quot;The budget doesn&apos;t align with the scope of deliverables required.&quot;
         </div>
       </div>
@@ -611,6 +611,115 @@ const InvitedRejected = () => (
     <TabRow />
     <ContentDetails />
     <TimelineInfo />
+  </PhoneFrame>
+);
+
+/* =================================================================
+   3b) YOU DECLINED — Business rejected the counter offer
+   ================================================================= */
+const YouDeclinedCounter = () => (
+  <PhoneFrame bottomButtons={<BtnAccept label="Send New Offer" />}>
+    <div style={{ background: "white", border: "1px solid #d5d7d8", borderRadius: 14, padding: 12, boxShadow: "0 2px 8.6px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" as const, gap: 10 }}>
+      <ProfileCard badge={<InvitedBadge />} />
+
+      {/* Negotiation Timeline — full story */}
+      <div style={{ background: "#fafafa", borderRadius: 14, padding: 12 }}>
+        <div style={{ position: "relative", paddingLeft: 20 }}>
+          <div style={{ position: "absolute", left: 7, top: 8, bottom: 8, width: 2, background: "#e5e7eb" }} />
+
+          {/* Step 1: You offered */}
+          <div style={{ position: "relative", paddingBottom: 14, paddingLeft: 16 }}>
+            <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "#9ca3af", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <div style={{ fontSize: 11, color: "#8f8f8f", fontWeight: 500, marginBottom: 2 }}>You offered</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#9ca3af", textDecoration: "line-through" }}>SAR 180</div>
+          </div>
+
+          {/* Step 2: Counter offer received */}
+          <div style={{ position: "relative", paddingBottom: 14, paddingLeft: 16 }}>
+            <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "#9ca3af", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="white"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16l-6.4 5.2L8 14l-6-4.8h7.6z" transform="scale(0.5) translate(12,12)"/></svg>
+            </div>
+            <div style={{ fontSize: 11, color: "#8f8f8f", fontWeight: 500, marginBottom: 2 }}>Ahmed Ali counter-offered</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#9ca3af", textDecoration: "line-through" }}>
+              SAR 250 <span style={{ fontSize: 10, color: "#9ca3af", fontWeight: 500, textDecoration: "none" }}>+SAR 70</span>
+            </div>
+
+            {/* Deliverables Diff — show what they wanted to change */}
+            <DeliverablesDiff changes={deliverableChanges} />
+          </div>
+
+          {/* Step 3: You declined — the final step (highlighted) */}
+          <div style={{ position: "relative", paddingLeft: 16 }}>
+            <div style={{ position: "absolute", left: -20, top: 4, width: 16, height: 16, borderRadius: "50%", background: "#dc2626", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </div>
+            <div style={{ fontSize: 11, color: "#dc2626", fontWeight: 600 }}>You declined the counter offer</div>
+            <div style={{ fontSize: 10, color: "#8f8f8f", fontWeight: 500, marginTop: 2 }}>Nov 29, 2025 · 3:15 PM</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Decision summary card */}
+      <div style={{ background: "#fef2f2", borderRadius: 12, padding: "12px 14px", border: "1px solid #fecaca" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 8, background: "#dc2626", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </div>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#991b1b" }}>You Declined the Counter Offer</div>
+            <div style={{ fontSize: 10, color: "#b91c1c", fontWeight: 500, marginTop: 1 }}>This negotiation has ended</div>
+          </div>
+        </div>
+        <div style={{ height: 1, background: "#fecaca", margin: "6px 0 8px" }} />
+        <div style={{ display: "flex", gap: 10 }}>
+          <div style={{ flex: 1, textAlign: "center" as const }}>
+            <div style={{ fontSize: 10, color: "#b91c1c", fontWeight: 500, marginBottom: 2 }}>Your Offer</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#991b1b", textDecoration: "line-through", opacity: 0.5 }}>SAR 180</div>
+          </div>
+          <div style={{ width: 1, background: "#fecaca" }} />
+          <div style={{ flex: 1, textAlign: "center" as const }}>
+            <div style={{ fontSize: 10, color: "#b91c1c", fontWeight: 500, marginBottom: 2 }}>Their Ask</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#991b1b", textDecoration: "line-through", opacity: 0.5 }}>SAR 250</div>
+          </div>
+          <div style={{ width: 1, background: "#fecaca" }} />
+          <div style={{ flex: 1, textAlign: "center" as const }}>
+            <div style={{ fontSize: 10, color: "#b91c1c", fontWeight: 500, marginBottom: 2 }}>Gap</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#dc2626" }}>SAR 70</div>
+          </div>
+        </div>
+      </div>
+
+      {/* What's next — guidance card */}
+      <div style={{ background: "white", borderRadius: 12, padding: "10px 14px", border: "1px solid #eef0f2" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4446d2" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#060b35" }}>What&apos;s next?</span>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 20, height: 20, borderRadius: 6, background: "rgba(68,70,210,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4446d2" strokeWidth="2.5" strokeLinecap="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+            </div>
+            <span style={{ fontSize: 11, color: "#555", lineHeight: 1.4 }}>Send a <span style={{ fontWeight: 600, color: "#060b35" }}>new offer</span> with different terms</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 20, height: 20, borderRadius: 6, background: "rgba(68,70,210,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4446d2" strokeWidth="2.5" strokeLinecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <span style={{ fontSize: 11, color: "#555", lineHeight: 1.4 }}>Or explore <span style={{ fontWeight: 600, color: "#060b35" }}>other influencers</span> for your campaign</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <TabRow />
+    <ContentDetails />
+    <TimelineInfo rows={[
+      ["Offer Sent:", "Nov 28, 2025 · 10:30 AM"],
+      ["Counter Received:", "Nov 29, 2025 · 11:00 AM"],
+      ["You Declined:", "Nov 29, 2025 · 3:15 PM", "#dc2626"],
+    ]} />
   </PhoneFrame>
 );
 
@@ -683,7 +792,7 @@ const PublicScreen = () => (
 );
 
 /* =================================================================
-   Main App — 10 States
+   Main App — All States
    ================================================================= */
 export default function Home() {
   useKeyframeStyles();
@@ -747,12 +856,20 @@ export default function Home() {
       component: <CounterVariant changes={changesD} />
     },
     {
-      label: "Rejected",
+      label: "Declined by Influencer",
       icon: <XCircle />,
-      desc: "Influencer declined the invitation",
+      desc: "Influencer declined your original proposal",
       color: "#dc2626",
       bg: "rgba(220,38,38,0.06)",
       component: <InvitedRejected />
+    },
+    {
+      label: "You Declined Counter",
+      icon: <XCircle />,
+      desc: "You rejected the influencer's counter offer — negotiation ended",
+      color: "#991b1b",
+      bg: "rgba(153,27,27,0.06)",
+      component: <YouDeclinedCounter />
     },
     {
       label: "Expired",
@@ -780,7 +897,7 @@ export default function Home() {
           JUSOR — Business View
         </div>
         <h1 style={{ fontSize: 22, fontWeight: 700, color: "#0b0b0b", margin: "0 0 4px" }}>Proposal Details — All States</h1>
-        <p style={{ fontSize: 13, color: "#717171", margin: 0 }}>Complete lifecycle: Pending {'->'} Accepted / Counter / Rejected / Expired + Public</p>
+        <p style={{ fontSize: 13, color: "#717171", margin: 0 }}>Complete lifecycle: Pending {'→'} Accepted / Counter / Declined / Expired + Public</p>
       </div>
 
       {/* State Cards */}
